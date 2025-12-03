@@ -393,10 +393,11 @@ class SWESmithInstances(BaseModel, AbstractInstanceSource):
     def get_instance_configs(self) -> list[BatchInstance]:
         def convert_instance_dict(instance_dict: dict[str, Any]) -> dict[str, Any]:
             instance_dict["id"] = instance_dict["instance_id"]
-            # todo: The base_commit is currently incorrect
-            instance_dict["base_commit"] = instance_dict["id"]
             instance_dict["problem_statement"] = instance_dict.get("problem_statement", "")
-            instance_dict["repo_name"] = "testbed"
+            repo_name = instance_dict.get("repo_name", "testbed")
+            base_commit = instance_dict.get("base_commit", instance_dict["id"])
+            instance_dict["repo_name"] = repo_name
+            instance_dict["base_commit"] = base_commit
             instance_dict["extra_fields"] = {"fail_to_pass": instance_dict["FAIL_TO_PASS"]}
             return instance_dict
 
